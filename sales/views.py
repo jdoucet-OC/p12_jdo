@@ -14,11 +14,9 @@ class ContractsViewSet(viewsets.ModelViewSet):
     """"""
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class EventsViewSet(viewsets.ModelViewSet):
     """"""
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticated]
