@@ -22,7 +22,7 @@ class Client(models.Model):
     phone = models.CharField(max_length=20)
     companyName = models.CharField(max_length=250)
     dateCreated = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField()
+    dateUpdated = models.DateTimeField(auto_now=True)
     salesContact = models.ForeignKey(to=Employee,
                                      on_delete=models.SET_NULL,
                                      null=True)
@@ -37,9 +37,10 @@ class Contract(models.Model):
                                      on_delete=models.SET_NULL,
                                      null=True)
     client = models.ForeignKey(to=Client,
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE,
+                               null=True)
     dateCreated = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField()
+    dateUpdated = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=False)
     amount = models.FloatField()
     paymentDue = models.DateTimeField()
@@ -53,7 +54,7 @@ class Event(models.Model):
     client = models.ForeignKey(to=Client,
                                on_delete=models.CASCADE)
     dateCreated = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField()
+    dateUpdated = models.DateTimeField(auto_now=True)
     eventStatus = models.ForeignKey(to=Contract,
                                     on_delete=models.CASCADE)
     attendees = models.IntegerField()
