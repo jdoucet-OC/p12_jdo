@@ -3,16 +3,14 @@ from .serializers import (ClientSerializer, ContractSerializer,
                           EventSerializer)
 from management.models import Client, Contract, Event, Employee
 from rest_framework.response import Response
-from rest_framework import viewsets, permissions, generics, status
-from django.conf import settings
-from django.utils.timezone import make_aware
-from datetime import datetime
+from rest_framework import viewsets, permissions, status
+from .permissions import IsSales
 
 
 class ClientsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSales]
 
     def get_queryset(self):
         employee = Employee.objects.get(user=self.request.user)
@@ -42,6 +40,7 @@ class ClientsViewSet(viewsets.ModelViewSet):
 class ContractsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = ContractSerializer
+    permission_classes = [permissions.IsAuthenticated, IsSales]
 
     def get_queryset(self):
         """"""
@@ -60,11 +59,22 @@ class ContractsViewSet(viewsets.ModelViewSet):
             contract = serializer.save(client=client,
                                        salesContact=employee)
             contract.save()
+            event = Event(contract=contract)
+            event.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventsViewSet(viewsets.ModelViewSet):
     """"""
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [permissions.IsAuthenticated, IsSales]
+
+    def get_queryset(self):
+        """"""
+        contractid = self.kwargs['contract_pk']
+        clientid = self.kwargs['clients_pk']
+        client = Client.objects.get(id=clientid)
+        contract = Contract.objects.get(id=contractid)
+        if client == contract.client:
+            return Event.objects.filter(contract=contract)

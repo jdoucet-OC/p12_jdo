@@ -51,12 +51,12 @@ class Event(models.Model):
     supportContact = models.ForeignKey(to=Employee,
                                        on_delete=models.SET_NULL,
                                        null=True)
-    client = models.ForeignKey(to=Client,
-                               on_delete=models.CASCADE)
+
     dateCreated = models.DateTimeField(auto_now_add=True)
     dateUpdated = models.DateTimeField(auto_now=True)
-    eventStatus = models.ForeignKey(to=Contract,
-                                    on_delete=models.CASCADE)
-    attendees = models.IntegerField()
-    eventDate = models.DateTimeField()
-    notes = models.TextField(max_length=2048)
+    contract = models.ForeignKey(to=Contract,
+                                 on_delete=models.CASCADE)
+    attendees = models.IntegerField(null=True)
+    eventDate = models.DateTimeField(null=True)
+    notes = models.TextField(max_length=2048,
+                             null=True)
