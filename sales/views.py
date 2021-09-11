@@ -4,13 +4,13 @@ from .serializers import (ClientSerializer, ContractSerializer,
 from management.models import Client, Contract, Event, Employee
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
-from .permissions import IsSales
+from .permissions import IsContact
 
 
 class ClientsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSales]
+    permission_classes = [permissions.IsAuthenticated, IsContact]
     queryset = Client.objects.all()
 
     def create(self, request, *args, **kwargs):
@@ -19,6 +19,7 @@ class ClientsViewSet(viewsets.ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             employee = Employee.objects.get(user=self.request.user)
             client = serializer.save(salesContact=employee)
+            self.check_object_permissions(request, client)
             client.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -27,6 +28,7 @@ class ClientsViewSet(viewsets.ModelViewSet):
         """"""
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+        self.check_object_permissions(request, instance)
         serializer = self.get_serializer(instance, data=request.data,
                                          partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -37,7 +39,7 @@ class ClientsViewSet(viewsets.ModelViewSet):
 class ContractsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = ContractSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSales]
+    permission_classes = [permissions.IsAuthenticated, IsContact]
 
     def get_queryset(self):
         """"""
@@ -47,11 +49,11 @@ class ContractsViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """"""
-
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             clientid = self.kwargs['clients_pk']
             client = Client.objects.get(id=clientid)
+            self.check_object_permissions(request, client)
             employee = Employee.objects.get(user=self.request.user)
             contract = serializer.save(client=client,
                                        salesContact=employee)
@@ -65,7 +67,7 @@ class ContractsViewSet(viewsets.ModelViewSet):
 class EventsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSales]
+    permission_classes = [permissions.IsAuthenticated, IsContact]
 
     def get_queryset(self):
         """"""
