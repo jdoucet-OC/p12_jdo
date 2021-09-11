@@ -11,10 +11,7 @@ class ClientsViewSet(viewsets.ModelViewSet):
     """"""
     serializer_class = ClientSerializer
     permission_classes = [permissions.IsAuthenticated, IsSales]
-
-    def get_queryset(self):
-        employee = Employee.objects.get(user=self.request.user)
-        return Client.objects.filter(salesContact=employee)
+    queryset = Client.objects.all()
 
     def create(self, request, *args, **kwargs):
         """"""
