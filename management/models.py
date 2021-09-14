@@ -56,7 +56,10 @@ class Event(models.Model):
     dateUpdated = models.DateTimeField(auto_now=True)
     contract = models.ForeignKey(to=Contract,
                                  on_delete=models.CASCADE)
-    attendees = models.IntegerField(null=True)
-    eventDate = models.DateTimeField(null=True)
+    attendees = models.IntegerField(null=True,
+                                    blank=True)
+    eventDate = models.DateTimeField(null=True,
+                                     blank=True)
     notes = models.TextField(max_length=2048,
-                             null=True)
+                             null=True,
+                             blank=True)

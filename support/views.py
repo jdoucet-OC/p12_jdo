@@ -1,10 +1,9 @@
 from .serializers import (ClientSerializer,
                           EventSerializer)
-from management.models import Client, Event, Employee, Contract
+from management.models import Client, Event, Contract
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 from .permissions import IsAssigned, ReadOnly
-from django.shortcuts import get_object_or_404
 
 
 class ClientsViewSet(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from management.models import Client, Contract, Event
+from management.models import Client, Event
 
 
 class ClientSerializer(serializers.ModelSerializer):
