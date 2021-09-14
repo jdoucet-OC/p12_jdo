@@ -18,7 +18,6 @@ linux / mac : `source env/bin/activate`
 6.Run the web server using :  
 `python manage.py runserver`  
 7.You can now access the web application locally using the given link in the console ( usually, http://127.0.0.1:8000 )  
-8.Refer to the PostMan documentation to see how to use the API : https://www.postman.com/ocjdo/workspace/my-workspace/overview
 
 ## Flake-8 Report
 To generate a Flake8-html report, use :  
