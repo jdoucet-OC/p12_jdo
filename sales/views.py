@@ -1,4 +1,3 @@
-from rest_framework import viewsets, permissions
 from .serializers import (ClientSerializer, ContractSerializer,
                           EventSerializer)
 from management.models import Client, Contract, Event, Employee

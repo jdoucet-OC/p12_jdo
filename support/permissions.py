@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from management.models import Client, Contract, Event, Employee
+from management.models import Employee
 
 
 class ReadOnly(permissions.BasePermission):
